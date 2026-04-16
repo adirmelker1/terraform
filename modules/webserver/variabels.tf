@@ -1,11 +1,4 @@
-variable vpc_cidr {
-}
 
-variable subnet_cidr {
-}
-
-variable env {
-}
 
 variable availability_zone {
 
@@ -27,6 +20,12 @@ variable public_key_location {
 
 }
 
+variable vpc_id {
+
+}
 variable image_name {
+
+}
+variable subnet_id {
 
 }
