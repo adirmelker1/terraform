@@ -1,34 +1,5 @@
 provider "aws" {}
 
-variable vpc_cidr {
-}
-
-variable subnet_cidr {
-}
-
-variable env {
-}
-
-variable availability_zone {
-
-}
-
-variable env_prefix {
-
-}
-
-variable instance_type {
-
-}
-
-variable my_ip {
-
-}
-
-variable public_key_location {
-
-}
-
 resource "aws_vpc" "development_vpc" {
   cidr_block = var.vpc_cidr
   tags = {
@@ -106,9 +77,7 @@ data "aws_ami" "latest-amazon-linux-image" {
   }
 }
 
-output "aws_ami_id" {
-  value = data.aws_ami.latest-amazon-linux-image.id
-}
+
 
 resource "aws_key_pair" "ssh-key" {
   key_name   = "myapp-server-kp"
