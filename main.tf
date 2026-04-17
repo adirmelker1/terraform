@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+    bucket = "adir-S3Bucket"
+    key    = "path/to/my/key"
+    region = "eu-north-1"
+  }
+}
+
+
 provider "aws" {}
 
 variable vpc_cidr {
