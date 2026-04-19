@@ -1,0 +1,7 @@
+vpc_cidr = "10.0.0.0/16"
+subnet_cidr = "10.0.10.0/24"
+availability_zone = "eu-north-1a"
+env_prefix = "dev"
+my_ip = "46.117.118.209/32"
+instance_type = "t3.micro"
+public_key_location = "~/.ssh/id_rsa.pub"

@@ -1,10 +1,10 @@
-terraform {
-  backend "s3" {
-    bucket = "adir-S3Bucket"
-    key    = "path/to/my/key"
-    region = "eu-north-1"
-  }
-}
+# terraform {
+#   backend "s3" {
+#     bucket = "adir-S3Bucket"
+#     key    = "path/to/my/key"
+#     region = "eu-north-1"
+#   }
+# }
 
 
 provider "aws" {}
@@ -15,8 +15,7 @@ variable vpc_cidr {
 variable subnet_cidr {
 }
 
-variable env {
-}
+
 
 variable availability_zone {
 
@@ -119,6 +118,10 @@ output "aws_ami_id" {
   value = data.aws_ami.latest-amazon-linux-image.id
 }
 
+output "ec2_public_ips" {
+  value = aws_instance.myapp-server[*].public_ip
+}
+
 resource "aws_key_pair" "ssh-key" {
   key_name   = "myapp-server-kp"
   public_key = file(var.public_key_location)
@@ -126,15 +129,19 @@ resource "aws_key_pair" "ssh-key" {
 }
 
 resource "aws_instance" "myapp-server" {
+  count         = 3
   ami           = data.aws_ami.latest-amazon-linux-image.id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.development_subnet.id
-  security_groups = [aws_default_security_group.default_sg.id]
-  availability_zone = var.availability_zone
-  associate_public_ip_address = true
-  key_name = aws_key_pair.ssh-key.key_name
-  tags = {
-    Name = "${var.env_prefix}-server"
-  }
 
+  vpc_security_group_ids = [aws_default_security_group.default_sg.id]
+
+  availability_zone           = var.availability_zone
+  associate_public_ip_address = true
+  key_name                    = aws_key_pair.ssh-key.key_name
+  user_data                   = file("./entry-point.sh")
+
+  tags = {
+    Name = "${var.env_prefix}-server-${count.index}"
+  }
 }
