@@ -129,7 +129,7 @@ resource "aws_key_pair" "ssh-key" {
 }
 
 resource "aws_instance" "myapp-server" {
-  count         = 3
+  count         = 1
   ami           = data.aws_ami.latest-amazon-linux-image.id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.development_subnet.id
